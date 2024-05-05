@@ -1,0 +1,233 @@
+1.DROP USER mahi CASCADE;
+2.SELECT username FROM dba_users;
+3.select table_name from user_tables;
+4.connect / as sysdba
+5.alter user system identified by [password];
+6.grant create session to mahi;
+7.revoke all privilges from mahi;
+8.grant all privileges to  mahi;
+9.SPOOL F:\sql\kisu.txt
+SELECT * FROM Supervisor;
+SPOOL OFF
+10.select * from supervisor;
+11.select * from employee;
+12.select * from  task;
+13.select * from  workday;
+14.select * from  timeclock;
+        SuperVisor
+Create table supervisor (
+       supervisorID int,
+       name varchar(100),
+       email varchar(100),
+       salary int,
+       primary key(supervisorID)
+    );
+
+
+ Create table employee (
+        employeeID int,
+        name varchar(100),
+        email varchar(100),
+        position varchar(100),
+        salary int,
+        supervisorID int,
+        primary key(employeeID),
+        foreign key (supervisorID) references supervisor(supervisorID)
+    );
+ 
+
+Create table task (
+    taskID int,
+    title varchar(100),
+    description varchar(100),
+    assignedTo int,
+    deadline date,
+    status varchar(20),
+    primary key(taskID),
+    foreign key (assignedTo) references employee(employeeID)
+);        
+      
+
+Create table workday (
+    workdayID int,
+    workDate date,
+    hoursWorked decimal(5,2),
+    employeeID INT,
+    primary key(workdayID),
+    foreign key (employeeID) references employee(employeeID)
+);
+     
+
+Create table timeclock (
+        clockID int,
+        employeeID int,
+        clockIn timestamp,
+        clockOut timestamp,
+        primary key(clockID),
+        foreign key (employeeID) references employee(employeeID)
+    );
+              timeclock 
+        clockID int,
+        employeeID int,
+        clockIn timestamp,
+        clockOut timestamp,
+        primary key(clockID),
+        foreign key (employeeID) references employee(employeeID)
+
+
+
+insert into supervisor(supervisorID, name, email,salary) values (1, 'john smith', 'john@example.com',10000);
+insert into supervisor(supervisorID, name, email, salary) values (2, 'Emily Brown', 'emily@example.com', 12000);
+insert into supervisor(supervisorID, name, email, salary) values (3, 'Michael Johnson', 'michael@example.com', 11000);
+insert into supervisor(supervisorID, name, email, salary) values (4, 'Jessica Davis', 'jessica@example.com', 10500);
+
+insert into employee(employeeID, name, email, position, salary, supervisorID) values (1, 'alice jones', 'alice@example.com', 'developer',5000, 1);
+insert into employee(employeeID, name, email, position, salary, supervisorID) values (2, 'Bob Smith', 'bob@example.com', 'Designer', 5500, 2);
+insert into employee(employeeID, name, email, position, salary, supervisorID) values (3, 'Emma Lee', 'emma@example.com', 'Marketing Specialist', 4800, 3);
+insert into employee(employeeID, name, email, position, salary, supervisorID) values (4, 'David Johnson', 'david@example.com', 'Project Manager', 6000, 4);
+insert into employee(employeeID, name, email, position, salary, supervisorID) values (5, 'David John', 'david2@example.com', 'junior Project Manager', 6000, 1);
+
+
+insert into task(taskID, title, description, assignedTo, deadline, status) values (1, 'task 1', 'description 1', 1, to_date('2024-05-10', 'YYYY-MM-DD'), 'pending');
+insert into task(taskID, title, description, assignedTo, deadline, status) values (2, 'Task 2', 'Description 2', 2, to_date('2024-05-15', 'YYYY-MM-DD'), 'in progress');
+insert into task(taskID, title, description, assignedTo, deadline, status) values (3, 'Task 3', 'Description 3', 3, to_date('2024-05-20', 'YYYY-MM-DD'), 'completed');
+insert into task(taskID, title, description, assignedTo, deadline, status) values (4, 'Task 4', 'Description 4', 4, to_date('2024-05-25', 'YYYY-MM-DD'), 'pending');
+
+insert into workday(workdayID, workDate, hoursWorked, employeeID) values (1, to_date('2024-05-01','YYYY-MM-DD'), 8.5, 1);
+insert into workday(workdayID, workDate, hoursWorked, employeeID) values (2, to_date('2024-05-02','YYYY-MM-DD'), 7.5, 2);
+insert into workday(workdayID, workDate, hoursWorked, employeeID) values (3, to_date('2024-05-03','YYYY-MM-DD'), 9.0, 3);
+insert into workday(workdayID, workDate, hoursWorked, employeeID) values (4, to_date('2024-05-04','YYYY-MM-DD'), 8.0, 4);
+
+insert into timeclock(clockID, employeeID, clockIn, clockOut) values (1, 1, to_timestamp('2024-05-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), to_timestamp('2024-05-01 17:30:00', 'YYYY-MM-DD HH24:MI:SS'));
+insert into timeclock(clockID, employeeID, clockIn, clockOut) values (2, 2, to_timestamp('2024-05-02 08:30:00', 'YYYY-MM-DD HH24:MI:SS'), to_timestamp('2024-05-02 16:45:00', 'YYYY-MM-DD HH24:MI:SS'));
+insert into timeclock(clockID, employeeID, clockIn, clockOut) values (3, 3, to_timestamp('2024-05-03 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), to_timestamp('2024-05-03 18:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+insert into timeclock(clockID, employeeID, clockIn, clockOut) values (4, 4, to_timestamp('2024-05-04 09:15:00', 'YYYY-MM-DD HH24:MI:SS'), to_timestamp('2024-05-04 17:00:00', 'YYYY-MM-DD HH24:MI:SS'));
+
+SET LINESIZE 150
+SET PAGESIZE 100
+COLUMN supervisorID FORMAT 99999
+COLUMN name FORMAT A30
+COLUMN email FORMAT A30
+COLUMN salary FORMAT A30
+COLUMN employeeID FORMAT 99999
+COLUMN name FORMAT A30
+COLUMN email FORMAT A30
+COLUMN position FORMAT A30
+COLUMN salary FORMAT 99999
+COLUMN supervisorID FORMAT 99999
+COLUMN taskID FORMAT 99999
+COLUMN title FORMAT A30
+COLUMN description FORMAT A30
+COLUMN assignedTo FORMAT 99999
+COLUMN deadline FORMAT A15
+COLUMN status FORMAT A20
+COLUMN workdayID FORMAT 99999
+COLUMN workDate FORMAT A15
+COLUMN hoursWorked FORMAT 999.99
+COLUMN employeeID FORMAT 99999
+COLUMN clockID FORMAT 99999
+COLUMN employeeID FORMAT 99999
+COLUMN clockIn FORMAT A25
+COLUMN clockOut FORMAT A25
+
+1.how to add new task to a particular employee
+   insert into task(taskID, title, description, assignedTo, deadline, status) values (5, 'task 2', 'description 2', 1, to_date('2024-05-10', 'YYYY-MM-DD'), 'pending');
+2.how to see all tasks assigned to particular employee
+  method no 1: select * from task where assignedTo = 1;
+  method no 2:select * from task where assignedTo in(select employeeID from employee where employeeID = 1);
+3.updating task details
+  update task set title='New Title1', description='New Description1' where taskID = 1;
+4.to see updated title,description about task details
+  select taskID,title,description from task where taskID=1;
+5.how to mark a task completed 
+  update task set status = 'completed' where taskID = 1;
+  select taskID,status from task where taskID=1;
+6.View tasks with a particular status
+   SELECT * FROM task WHERE status = 'pending'
+7.View tasks with a deadline within a certain date range
+   select * from task where deadline between to_date('2024-05-10', 'YYYY-MM-DD') and to_date('2024-05-15', 'YYYY-MM-DD');
+8.Search for tasks by title or description
+  method no 1:select * from task where title like '%New%' or description like '%1%';
+  method no 2:select t.* from task t join employee e on t.assignedTo = e.employeeID where (e.position like '%er%' or e.salary >= 5500) and t.status = 'pending';
+9.no of employee
+  select count(*) as total_employees from employee;
+10.no of employee under one particular supervisor
+  select count(*) as tot_em_un_super from employee where supervisorID = 1;
+11.no of tasks assigned to one particular employee
+  select count(*) as total_tasks_assigned from task t join employee e on t.assignedTo = e.employeeID where e.employeeID = 2;  
+12.To retrieve the names and emails of employees along with the name of their respective supervisor under a specific supervisor
+   insert into employee(employeeID, name, email, position, salary, supervisorID) values (6, 'David John6', 'david6@example.com', 'junior Project Manager', 6000, 4);
+   select e.name AS employee_name, e.email as employee_email, s.name as supervisor_name from employee e join supervisor s on e.supervisorID = s.supervisorID where s.supervisorID = 4;
+13.trigger for assigning default supervisor
+  CREATE OR REPLACE TRIGGER default_supervisor_trigger
+  BEFORE INSERT ON employee
+FOR EACH ROW
+BEGIN
+    IF :new.supervisorID IS NULL THEN
+        :new.supervisorID := 1; 
+    END IF;
+END;
+/
+insert into employee(name, email, position, salary,supervisorID) values ('alice jones', 'alice@example.com', 'developer',5000);
+14.trigger for auto-increment the employeeID column,
+CREATE OR REPLACE TRIGGER employee_id_trigger
+BEFORE INSERT ON employee
+FOR EACH ROW
+DECLARE
+    max_employee_id INT;
+BEGIN
+   
+    SELECT MAX(employeeID) INTO max_employee_id FROM employee;
+    IF max_employee_id IS NULL THEN
+        :new.employeeID := 1;
+    ELSE
+        :new.employeeID := max_employee_id + 1;
+    END IF;
+END;
+/
+insert into employee(name, email, position, salary) values ('alice jones2', 'alice2@example.com', 'developer',7000);
+15.function creating for no of employee under one distinct supervisor
+set serveroutput on
+CREATE OR REPLACE FUNCTION get_eus(p_supervisor_id INT)
+RETURN INT
+IS
+    v_employee_count INT;
+BEGIN
+    SELECT COUNT(*) INTO v_employee_count
+    FROM employee
+    WHERE supervisorID = p_supervisor_id;
+
+    RETURN v_employee_count;
+END;
+/
+
+set serveroutput on
+
+DECLARE 
+    value INT;
+BEGIN
+    value := get_eus(3);
+    DBMS_OUTPUT.PUT_LINE('Employee Count: ' || value); -- Displaying the result
+END;
+/
+
+15. function for marking task as completed
+
+CREATE OR REPLACE PROCEDURE mark_task_as_complete(p_task_id INT)
+IS
+BEGIN
+    UPDATE task
+    SET status = 'completed'
+    WHERE taskID = p_task_id;
+    COMMIT;
+END;
+/
+BEGIN
+    mark_task_as_complete(1);
+END;
+/
+
+
+
+
+
